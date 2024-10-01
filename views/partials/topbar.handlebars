@@ -1,0 +1,42 @@
+    <div class="topbar">
+        <div class="wrapper target">
+            <div class="center">
+                <a href="/index">ANA SAYFA</a>
+                <a href="/about">HAKKIMIZDA</a>
+                {{#if user}}
+                    <a href="/logout">ÇIKIŞ</a>
+                    <a href="/add">YAZI EKLE</a>
+                {{else}}
+                    <a href="/register">KAYIT OL</a>
+                    <a href="/login">GİRİŞ YAP</a>
+                {{/if}}
+                <a href="/game1">BIRAKABİLİRSİN</a>
+            </div>
+            <div class="right">
+                <span>
+                    <img src="/images/profile1.jpg" alt="">
+                </span>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder=".....">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-menu">
+            <i class="fa-solid fa-bars" id="homeIcon"></i>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/index">ANA SAYFA</a>
+            <a href="/about">HAKKIMIZDA</a>
+            {{#if user}}
+                <a href="/logout">ÇIKIŞ</a>
+                <a href="/add">YAZI EKLE</a>
+            {{else}}
+                <a href="/register">KAYIT OL</a>
+                <a href="/login">GİRİŞ YAP</a>
+            {{/if}}
+            <a href="/game1">BIRAKABİLİRSİN</a>
+
+        </div>
+    </div>

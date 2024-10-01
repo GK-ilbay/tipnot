@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tıpnot</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="./public/images/favicon16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./public/images/favicon32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./public/images/favicon192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./public/images/favicon512x512.png">
+    <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="./public/images/favicon180x180.png">
+    <link rel="stylesheet" href="./public/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="topbar">
+        <div class="wrapper target">
+            <div class="center">
+                <a href="./index.html">HOME</a>
+                <a href="./pages/about.html">ABOUT</a>
+                <a href="./pages/register.html">REGISTER</a>
+                <a href="./pages/login.html">LOGIN</a>
+            </div>
+            <div class="right">
+                <span>
+                    <img src="public/images/profile1.jpg" alt="">
+                </span>
+                <div class="searchEngine" id="searchEngine">
+                    <input type="text" placeholder=".....">
+                    <i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-menu">
+            <i class="fa-solid fa-bars" id="homeIcon"></i>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="./index.html">HOME</a>
+            <a href="./pages/about.html">ABOUT</a>
+            <a href="./pages/register.html">REGISTER</a>
+            <a href="./pages/login.html">LOGIN</a>
+        </div>
+    </div>
+
+    <header class="header target">
+            <img src="public/images/home.jpg" alt="background">
+            <h1>Tıp Fakültesi <br> Ders Notları</h1>
+            <i class="fa-solid fa-staff-snake"></i>
+    </header>
+
+    <div class="home">
+        <div class="row">
+            <div class="card">
+                <h2>1. Sınıf</h2>
+                <p><br>Bu sınıf için ders içeriği yüklenmedi!</p>
+            </div>
+            
+            <div class="card">
+                <h2>2. Sınıf</h2>                
+                <!-- Komite başlıkları -->
+                <div class="committees">
+                    <div class="committee" data-committee="1">Komite 1</div>
+                    <div class="committee" data-committee="2">Komite 2</div>
+                    <div class="committee" data-committee="3">Komite 3</div>
+                    <div class="committee" data-committee="4">Komite 4</div>
+                    <div class="committee" data-committee="5">Komite 5</div>
+                </div>
+    
+                <!-- Ders başlıkları -->
+                <div class="courses hidden" id="committee-1">
+                    <ul>
+                        <li><a href="#">Anatomi</a></li>
+                        <li><a href="#">Fizyoloji</a></li>
+                        <li><a href="#">Histoloji ve Embriyoloji</a></li>
+                        <li><a href="#">Biyokimya</a></li>
+                        <li><a href="#">Biyofizik</a></li>
+                    </ul>
+                </div>
+    
+                <div class="courses hidden" id="committee-2">
+                    <ul>
+                        <li><a href="#">Anatomi</a></li>
+                        <li><a href="#">Fizyoloji</a></li>
+                        <li><a href="#">Histoloji ve Embriyoloji</a></li>
+                        <li><a href="#">Biyokimya</a></li>
+                        <li><a href="#">Biyofizik</a></li>
+                    </ul>
+                </div>
+    
+                <div class="courses hidden" id="committee-3">
+                    <ul>
+                        <li><a href="#">Anatomi</a></li>
+                        <li><a href="#">Fizyoloji</a></li>
+                        <li><a href="#">Histoloji ve Embriyoloji</a></li>
+                        <li><a href="#">Biyokimya</a></li>
+                    </ul>
+                </div>
+
+                <div class="courses hidden" id="committee-4">
+                    <ul>
+                        <li><a href="#">Anatomi</a></li>
+                        <li><a href="#">Fizyoloji</a></li>
+                        <li><a href="#">Histoloji ve Embriyoloji</a></li>
+                        <li><a href="#">Biyokimya</a></li>
+                    </ul>
+                </div>
+
+                <div class="courses hidden" id="committee-5">
+                    <ul>
+                        <li><a href="#">Patoloji</a></li>
+                        <li><a href="#">Farmakoloji</a></li>
+                        <li><a href="#">Mikrobiyoloji</a></li>
+                        <li><a href="#">Biyokimya</a></li>
+                        <li><a href="#">Biyofizik</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>3. Sınıf</h2>
+                <p><br>Bu sınıf için ders içeriği yüklenmedi!</p>
+            </div>
+
+        </div>
+    </div>
+    
+
+    <script src="public/js/search.js"></script>
+    <script src="public/js/scroll.js"></script>
+    <script src="public/js/openMenu.js"></script>
+    <script src="public/js/openCommittee.js"></script>
+</body>
+</html>

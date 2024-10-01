@@ -1,0 +1,63 @@
+    <div class="sidebar-left">
+        <button onclick="execCommand('bold')">Kalın</button>
+        <button onclick="execCommand('italic')">İtalik</button>
+        <button onclick="execCommand('underline')">Altı Çizili</button>
+        <button onclick="execCommand('justifyLeft')">Sola Hizala</button>
+        <button onclick="execCommand('justifyCenter')">Ortala</button>
+        <button onclick="execCommand('justifyRight')">Sağa Hizala</button>
+    </div>
+
+    <!-- Ana yazı editörü alanı -->
+    <div class="editor-container">
+        <!-- Üstteki araç çubuğu -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <select onchange="execCommand('fontName', this.value)">
+                    <option value="Arial">Arial</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Tahoma">Tahoma</option>
+                    <option value="Verdana">Verdana</option>
+                </select>
+            </div>
+            <div class="toolbar-right">
+                <select onchange="execCommand('fontSize', this.value)">
+                    <option value="1">Küçük</option>
+                    <option value="3">Normal</option>
+                    <option value="5">Büyük</option>
+                </select>
+                <select onchange="execCommand('foreColor', this.value)">
+                    <option value="black">Siyah</option>
+                    <option value="red">Kırmızı</option>
+                    <option value="blue">Mavi</option>
+                    <option value="green">Yeşil</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="editor" class="editor" contenteditable="true">
+            Blog yazınızı buraya yazın...
+        </div>
+        <button class="submit-btn" onclick="submitContent()">Gönder</button>
+    </div>
+
+    <!-- Sağ kenar bölmesi -->
+    <div class="sidebar-right">
+        <button onclick="execCommand('insertUnorderedList')">Liste</button>
+        <button onclick="execCommand('insertOrderedList')">Numaralı Liste</button>
+        <button onclick="execCommand('createLink', prompt('Bağlantı adresini girin:'))">Bağlantı Ekle</button>
+        <button onclick="execCommand('unlink')">Bağlantıyı Kaldır</button>
+    </div>
+
+    <script>
+        function execCommand(command, value = null) {
+            document.execCommand(command, false, value);
+        }
+
+        function submitContent() {
+            const content = document.getElementById('editor').innerHTML;
+            console.log(content);
+            // Burada AJAX kullanarak içeriği veritabanına kaydedebilirsiniz
+            alert("Yazı gönderildi! İçerik: " + content);
+        }
+    </script>

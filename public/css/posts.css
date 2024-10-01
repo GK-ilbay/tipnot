@@ -1,0 +1,48 @@
+.posts{
+    flex: 9;
+    margin-top: -50px;
+}
+.posts .post{
+    margin-top: 30px;
+    width: 100%;
+    height: auto;
+    border: 7px outset rgb(217, 195, 156);
+    border-radius: 40px;
+    padding: 10px;
+    padding-top: 30px;
+    background-image: url('/Projects/myBlog\ kopyası/public/images/frame.jpg');
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    font-family: "Nerko One", cursive;
+    max-width: 500px;
+}
+.posts .post li{
+    padding: 20px;
+    display: inline;
+    font-size: 110%;
+}
+.posts .post ul{
+    margin-top: 60px;
+    position: absolute;
+}
+.posts .post h2{
+    font-size: 220%;
+    color: rgb(23, 142, 136);
+}
+.posts .post a{
+    color: rgb(104, 159, 117);
+}
+
+/* Scroll Animation  */
+
+.posts .post {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 0.5s;
+}
+.posts .post.active{
+    opacity: 1;
+    transform: translateY();
+}
+

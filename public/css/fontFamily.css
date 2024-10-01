@@ -1,0 +1,26 @@
+/* Google fonts including area */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Cherish&family=Italianno&family=Jacquard+24&family=Macondo&family=Nerko+One&family=Space+Mono&family=Tangerine&family=VT323&display=swap');
+
+
+
+/*
+?google fonts usege area
+
+
+
+*regular type
+font-family: "Jacquard 24", system-ui;
+font-family: "Chakra Petch", sans-serif;
+
+*italic type
+font-family: "Macondo", cursive;
+font-family: "Tangerine", cursive;
+font-family: "Cherish", cursive;
+font-family: "Italianno", cursive;
+font-family: "Nerko One", cursive;
+
+*monospace type
+font-family: "Space Mono", monospace;
+font-family: "VT323", monospace;
+
+*/

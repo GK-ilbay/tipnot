@@ -1,0 +1,64 @@
+
+    <div class="logReg">
+        <img src="..//images/frame2.jpg" alt="register">
+        <form id="register">
+            <div class="formGroup">
+                <input name="email" type="text" required>
+                <span>E-mail *</span>
+            </div>
+            <div class="formGroup">
+                <input name="username" type="text" required>
+                <span>Kullanıcı Adı *</span>
+            </div>
+            <div class="formGroup">
+                <input name="password" type="text" required>
+                <span>Şifre *</span>
+            </div>
+
+            <div class="message">
+                <p id="registerMessage"></p>
+            </div>
+
+            <div class="btnGroup">
+                <a href="/login">Hesabın var mı?</a>
+                <button type="submit">Kayıt Ol</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const register = document.getElementById('register');
+        const message = document.getElementById('registerMessage');
+        const clearMessage = ()=>{
+            setTimeout(()=>{
+                message.style.opacity = 0;
+            }, 1000 * 8)
+        }
+
+        register.addEventListener('submit', (e)=>{
+            e.preventDefault();
+
+            const formData = new FormData (e.target);
+
+            fetch('/register', {
+                method: 'post',
+                body: formData
+            }).then(response=>response.json()).then(res=>{
+                if(res.case){
+                    message.style.color = 'green';
+                    message.innerHTML = res.message;
+                    setTimeout(()=>{
+                        message.innerHTML = 'Ana Sayfaya Yönlendiriliyorsunuz...';
+                    },1000 * 3)
+                    setTimeout(()=>{
+                        window.location.href = '/';
+                    },1000 * 5)
+                }
+                else{
+                    message.style.color = 'red';
+                    message.innerHTML = res.message;
+                    clearMessage();
+                }
+            });
+        });
+    </script>

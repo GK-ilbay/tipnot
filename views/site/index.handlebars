@@ -2,11 +2,11 @@
 
     <div class="home">
         <div class="row">
-            <div class="card">
+            <div class="card" data-year="1">
                 <h2>1. Sınıf</h2>
                 <p><br>Bu sınıf için ders içeriği yüklenmedi!</p>
             </div>
-            <div class="card">
+            <div class="card" data-year="2">
                 <h2>2. Sınıf</h2>
                 <!-- Komite başlıkları -->
                 <div class="committees">
@@ -67,10 +67,33 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card" data-year="3">
                 <h2>3. Sınıf</h2>
                 <p><br>Bu sınıf için ders içeriği yüklenmedi!</p>
             </div>
 
         </div>
     </div>
+
+    <script>
+        const courseElements = document.querySelectorAll('.courses li');
+
+        courseElements.forEach(course => {
+            course.addEventListener('click', function () {
+                // Tıklanan kartı bulmak için en yakın üst card'ı alıyoruz
+                const cardElement = this.closest('.card');
+                const year = cardElement.getAttribute('data-year');  // Yıl bilgisi dinamik olarak alınıyor
+
+                // Komite bilgisi
+                const committeeElement = this.closest('.courses');
+                const committee = committeeElement.id.split('-')[1];  // committee-1 gibi id'den alıyoruz
+
+                // Ders bilgisi
+                const course = this.getAttribute('data-course');
+
+                // Yeni sayfaya yönlendir
+                const queryString = `?year=${encodeURIComponent(year)}&committee=${encodeURIComponent(committee)}&course=${encodeURIComponent(course)}`;
+                window.location.href = `/articleListPage${queryString}`;
+            });
+        });
+    </script>

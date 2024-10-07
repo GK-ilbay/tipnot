@@ -1,0 +1,9 @@
+    <div class="home">
+        <div class="row">
+            {{#each articles}}
+                <div class="card">
+                    <a href="./{{this._id}}">{{this.title}}</a> <!-- Makale başlığı ve id'si -->
+                </div>
+            {{/each}}
+        </div>
+    </div>

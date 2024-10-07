@@ -49,7 +49,7 @@ const indexPage = require(path.join(__dirname, 'router', 'indexPage.js'));
 const aboutPage = require(path.join(__dirname, 'router', 'aboutPage.js'));
 const loginPage = require(path.join(__dirname, 'router', 'loginPage.js'));
 const registerPage = require(path.join(__dirname, 'router', 'registerPage.js'));
-const topicsPage = require(path.join(__dirname, 'router', 'topicsPage.js'));
+const articleListPage = require(path.join(__dirname, 'router', 'articleListPage.js'));
 const articlePage = require(path.join(__dirname, 'router', 'articlePage.js'));
 const logoutPage = require(path.join(__dirname, 'router', 'logoutPage.js'));
 const addPage = require(path.join(__dirname, 'router', 'addPage.js'));
@@ -74,7 +74,7 @@ app.use('/about', aboutPage);
 app.use('/login', loginPage);
 app.use('/register', registerPage)
 app.use('/logout', logoutPage);
-app.use('/topics', topicsPage);
+app.use('/articleListPage', articleListPage);
 app.use('/add', addPage);
 //app.use('/article', articlePage);
 app.use('*', (req , res)=>{res.render('site/error')});

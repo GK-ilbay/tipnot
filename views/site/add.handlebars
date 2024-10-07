@@ -1,6 +1,225 @@
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script>
-        var quill = new Quill('#editor', {
-            theme: 'snow'  // veya 'bubble'
-        });
-    </script>
+<style>
+    /* Quill editörünün kendisi */
+    #editor {
+        margin-left: 2vw;
+        width: 96vw;
+        height: 70vh;
+        /* Editör yüksekliği */
+        background-color: #fff;
+        /* Arka plan beyaz */
+    }
+
+    /* Yükle butonu */
+    #upload-button {
+        margin-left: 2vw;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #upload-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Pop-up (Modal) stili */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 10%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Yarı şeffaf arka plan */
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 5px;
+        width: 80%;
+        height: 60%;
+        text-align: center;
+    }
+
+    .modal input,
+    .modal select {
+        width: 90%;
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .modal select {
+        font-size: 3rem;
+    }
+
+    .modal button {
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+    .close-btn {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+<button id="upload-button">Siteye Yükle</button>
+<div id="editor">
+    <p>Bu alan Quill editörü tarafından düzenlenebilir hale gelecektir...</p>
+</div>
+
+
+
+<!-- Modal (Pop-up) yapısı -->
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Blog Gönderisi Yükle</h2>
+        <form id="upload-form">
+            <label for="year">Sınıf Seç:</label>
+            <select id="year" name="year" required>
+                <option value="" disabled selected>Sınıfı Seçiniz</option>
+                <option value="1">1. Sınıf</option>
+                <option value="2">2. Sınıf</option>
+                <option value="3">3. Sınıf</option>
+                <option value="4">4. Sınıf</option>
+                <option value="5">5. Sınıf</option>
+                <option value="6">6. Sınıf</option>
+            </select><br>
+
+            <label for="course">Ders Seç:</label>
+            <select id="course" name="course" required>
+                <option value="" disabled selected>Dersi Seçiniz</option>
+                <option value="Anatomi">Anatomi</option>
+                <option value="Fizyoloji">Fizyoloji</option>
+                <option value="Biyokimya">Biyokimya</option>
+                <option value="Patoloji">Patoloji</option>
+                <option value="Farmakoloji">Farmakoloji</option>
+                <!-- Diğer dersler eklenebilir -->
+            </select><br>
+
+            <input type="text" id="topic" name="title" placeholder="Konu Başlığı" required><br>
+
+            <input type="text" id="committee" name="committee" placeholder="Hangi Komite?" required><br>
+
+            <button type="submit">Onayla</button>
+
+            <div id="message">-----------------------</div>
+
+        </form>
+    </div>
+</div>
+
+
+<!-- Quill JavaScript dosyası -->
+<!-- Quill JavaScript dosyası -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    // Pop-up ve upload butonu elemanlarını al
+    const uploadButton = document.getElementById('upload-button');
+    const popupForm = document.getElementById('popup-form');
+    const popupDataForm = document.getElementById('upload-form');
+    const message = document.getElementById("message");
+    const popupModal = document.getElementById("uploadModal");
+
+    const closeButton = document.querySelector('.close-btn');
+    closeButton.addEventListener('click', () => {
+        popupModal.style.display = 'none';  // Pop-up kapanır
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === popupModal) {
+            popupModal.style.display = 'none';  // Modal dışında tıklanırsa pop-up kapanır
+        }
+    });
+
+    var toolbarOptions = [
+        [{ 'font': [] }, { 'size': [] }],
+        ['bold', 'italic', 'underline'],
+        [{ 'align': [] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['link'],
+        ['blockquote', 'code-block'],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean']  // Format temizle
+    ];
+
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: toolbarOptions
+        },
+        theme: 'snow'  // 'bubble' yerine 'snow' temasını kullanıyoruz
+    });
+
+    // Yükle butonuna tıklandığında pop-up formu göster
+    uploadButton.addEventListener('click', () => {
+        popupModal.style.display = 'block';  // Pop-up form görünür hale gelir
+    });
+
+    // Pop-up formu gönderme işlemi
+    popupDataForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Sayfanın yenilenmesini engelle
+
+        // Form verilerini topla
+        const formData = new FormData(popupDataForm);
+
+        // Quill editöründen içerik al ve form verilerine ekle
+        const quillContent = quill.root.innerHTML;
+        formData.append('content', quillContent);  // Editör içeriğini form verilerine ekleriz
+
+        // Fetch API ile POST isteği oluştur
+        fetch('/add', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())  // Sunucudan gelen yanıtı JSON olarak al
+            .then(res => {
+                // Yanıta göre işlemler
+                if (res.case) {
+                    message.style.color = 'green';  // Başarılıysa yeşil mesaj göster
+                    message.innerHTML = res.message;
+                    setTimeout(() => {
+                        message.innerHTML = 'Ana Sayfaya Yönlendiriliyorsunuz...';
+                    }, 1000 * 3);
+                    setTimeout(() => {
+                        window.location.href = '/';  // 5 saniye sonra yönlendirme
+                    }, 1000 * 5);
+                } else {
+                    message.style.color = 'red';  // Hata varsa kırmızı mesaj göster
+                    message.innerHTML = res.message;
+                    clearMessage();  // Mesajı temizlemek için bir fonksiyon çağrılabilir
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);  // Hata oluştuğunda konsola yazdır
+                message.style.color = 'red';  // Kullanıcıya hata mesajı göster
+                message.innerHTML = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+            });
+
+        // Pop-up formu tekrar gizle
+        popupForm.style.display = 'none';
+    });
+
+    // Mesaj temizleme fonksiyonu
+    function clearMessage() {
+        setTimeout(() => {
+            message.innerHTML = '';  // Mesajı birkaç saniye sonra temizle
+        }, 5000);
+    }
+</script>

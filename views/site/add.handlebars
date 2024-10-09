@@ -10,7 +10,7 @@
     }
 
     /* Yükle butonu */
-    #upload-button {
+    .newButtons {
         margin-left: 2vw;
         margin-top: 1vh;
         margin-bottom: 1vh;
@@ -22,7 +22,7 @@
         cursor: pointer;
     }
 
-    #upload-button:hover {
+    .newButtons:hover {
         background-color: #0056b3;
     }
 
@@ -65,6 +65,7 @@
         padding: 10px 20px;
         margin-top: 10px;
     }
+
     .close-btn {
         color: #aaa;
         float: right;
@@ -78,10 +79,63 @@
         text-decoration: none;
         cursor: pointer;
     }
+
+    .popup-trigger {
+        color: #3498db;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .popup-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .popup-content h2 {
+        margin-top: 0;
+    }
+
+    .popup-content p {
+        margin-bottom: 20px;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .popup-trigger {
+        color: #3498db;
+        cursor: pointer;
+        text-decoration: underline;
+    }
 </style>
-<button id="upload-button">Siteye Yükle</button>
+<button id="upload-button" class="newButtons">Paylaş</button>
+<button id="save-content-button" class="newButtons">Kaydet</button>
+<button id="add-definition-button !" class="newButtons">Açıklama Ekle</button>
+<button id="submit-definition-button" class="newButtons">Onayla ve Dön</button>
 <div id="editor">
-    <p>Bu alan Quill editörü tarafından düzenlenebilir hale gelecektir...</p>
+    <p></p>
 </div>
 
 
@@ -126,6 +180,14 @@
     </div>
 </div>
 
+<div class="popup" id="popup-2">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <h2>Öğrenim Nedir?</h2>
+        <p>Öğrenim, bilgi edinme ve beceri kazanma sürecidir...</p>
+    </div>
+</div>
+
 
 <!-- Quill JavaScript dosyası -->
 <!-- Quill JavaScript dosyası -->
@@ -137,17 +199,41 @@
     const popupDataForm = document.getElementById('upload-form');
     const message = document.getElementById("message");
     const popupModal = document.getElementById("uploadModal");
-
+    const addDefinitonButton = document.getElementById("add-definition-button");
+    const submitDefinitionButton = document.getElementById("submit-definition-button");
     const closeButton = document.querySelector('.close-btn');
+
+
+    let currentContent = "";
+    let selectedText = "";
+    let definitions = {};
+    let selectedTextRange = {};
+
+    var Block = Quill.import('blots/block'); // Blok elementini import ediyoruz
+
+    // PopupBlot adında yeni bir class oluşturuyoruz
+    class PopupBlot extends Block { }
+
+    // Blot için tanımlamalar
+    PopupBlot.blotName = 'popup-trigger';  // Özel format ismi
+    PopupBlot.tagName = 'span';            // Span tag'ı kullanılacak
+    PopupBlot.className = 'popup-trigger'; // Popup-trigger class'ı eklenecek
+
+    // Yeni formatı Quill'e kaydediyoruz
+    Quill.register(PopupBlot);
+
+
+
     closeButton.addEventListener('click', () => {
         popupModal.style.display = 'none';  // Pop-up kapanır
     });
-
     window.addEventListener('click', (event) => {
         if (event.target === popupModal) {
             popupModal.style.display = 'none';  // Modal dışında tıklanırsa pop-up kapanır
         }
     });
+
+    submitDefinitionButton.style.display = 'none';
 
     var toolbarOptions = [
         [{ 'font': [] }, { 'size': [] }],
@@ -164,14 +250,54 @@
         modules: {
             toolbar: toolbarOptions
         },
+        placeholder: 'İçeriğinizi buraya yazabilirsiniz...',
         theme: 'snow'  // 'bubble' yerine 'snow' temasını kullanıyoruz
     });
+
+    function getSelectedText() {
+        const range = quill.getSelection();
+        if (range && range.length > 0) {
+            return quill.getText(range.index, range.length);
+        }
+        return null;
+    }
+
+
 
     // Yükle butonuna tıklandığında pop-up formu göster
     uploadButton.addEventListener('click', () => {
         popupModal.style.display = 'block';  // Pop-up form görünür hale gelir
     });
+    const addDefinition = () => {
+        quill.formatText(selectedTextRange.index, selectedTextRange.length,);
+    };
 
+    addDefinitonButton.addEventListener('click', () => {
+        currentContent = quill.root.innerHTML;
+        selectedText = getSelectedText();
+        selectedTextRange = quill.getSelection();
+        if (selectedText) {
+            const span = document.createElement('span');
+            span.classList.add('popup-trigger');
+            span.innerHTML = selectedText
+
+            quill.formatText(selectedTextRange.index, selectedTextRange.length, 'popup-trigger', true); // Popup-trigger class'ı ekle
+            console.log(quill.root.innerHTML);
+
+        } else {
+            alert('Açıklama eklemek için lütfen bir metin seçin!');
+        }
+    })
+    submitDefinitionButton.addEventListener('click', () => {
+        definitions[selectedText] = quill.root.innerHTML;
+        quill.root.innerHTML = currentContent;
+        addDefinition();
+        addDefinitonButton.style.display = 'inline';
+        uploadButton.style.display = 'inline';
+        submitDefinitionButton.style.display = "none";
+        console.log(definitions);
+        console.log(quill.root.innerHTML)
+    })
     // Pop-up formu gönderme işlemi
     popupDataForm.addEventListener('submit', (e) => {
         e.preventDefault(); // Sayfanın yenilenmesini engelle

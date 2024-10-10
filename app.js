@@ -75,6 +75,7 @@ app.use('/login', loginPage);
 app.use('/register', registerPage)
 app.use('/logout', logoutPage);
 app.use('/articleListPage', articleListPage);
+app.use('/article', articlePage);
 app.use('/add', addPage);
 //app.use('/article', articlePage);
 app.use('*', (req , res)=>{res.render('site/error')});

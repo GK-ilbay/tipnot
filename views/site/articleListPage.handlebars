@@ -2,8 +2,20 @@
         <div class="row">
             {{#each articles}}
                 <div class="card">
-                    <a href="./{{this._id}}">{{this.title}}</a> <!-- Makale başlığı ve id'si -->
+                    <a data-id="{{this._id}}">{{this.title}}</a>
                 </div>
             {{/each}}
         </div>
     </div>
+
+    <script>
+        const titles = document.querySelectorAll('a');
+        titles.forEach(title =>{
+            title.style.cursor = 'pointer';
+            title.addEventListener(('click'), ()=>{
+                const id = title.getAttribute('data-id');
+                const queryString = `?id=${encodeURIComponent(id)}`;
+                window.location.href = `/article${queryString}`;
+            });
+        });
+    </script>

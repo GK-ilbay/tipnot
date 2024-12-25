@@ -75,6 +75,7 @@ app.use('/login', loginPage);
 app.use('/register', registerPage)
 app.use('/logout', logoutPage);
 app.use('/articleListPage', articleListPage);
+app.use('/article', articlePage);
 app.use('/add', addPage);
 app.use('/m1', m1Page);
 //app.use('/article', articlePage);

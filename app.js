@@ -53,7 +53,7 @@ const articleListPage = require(path.join(__dirname, 'router', 'articleListPage.
 const articlePage = require(path.join(__dirname, 'router', 'articlePage.js'));
 const logoutPage = require(path.join(__dirname, 'router', 'logoutPage.js'));
 const addPage = require(path.join(__dirname, 'router', 'addPage.js'));
-
+const m1Page = require(path.join(__dirname, 'router', 'm1Page.js'));
 
 app.use('/', (req, res, next)=>{
     console.log
@@ -76,6 +76,7 @@ app.use('/register', registerPage)
 app.use('/logout', logoutPage);
 app.use('/articleListPage', articleListPage);
 app.use('/add', addPage);
+app.use('/m1', m1Page);
 //app.use('/article', articlePage);
 app.use('*', (req , res)=>{res.render('site/error')});
 

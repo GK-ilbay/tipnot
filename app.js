@@ -44,10 +44,6 @@ app.use(expressSession({
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-
 // Describing router
 const indexPage = require(path.join(__dirname, 'router', 'indexPage.js'));
 const aboutPage = require(path.join(__dirname, 'router', 'aboutPage.js'));

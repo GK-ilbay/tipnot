@@ -13,7 +13,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 // CORS middleware configuration
 app.use(cors({
   origin: isProduction 
-    ? ['https://tipnot-v2.onrender.com', 'https://tipnot.net', process.env.FRONTEND_URL].filter(Boolean) 
+    ? ['https://tipnot-v2.onrender.com', 'https://tipnot.net', 'https://www.tipnot.net', process.env.FRONTEND_URL].filter(Boolean) 
     : ['http://localhost:3001', 'http://localhost:3000', 'http://localhost:8000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

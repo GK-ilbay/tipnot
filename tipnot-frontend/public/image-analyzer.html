@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Content Image Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-family: monospace;
+        }
+        .result {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            background: #f9f9f9;
+        }
+        .image-preview {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Content Image Analyzer</h1>
+    
+    <p>Paste your content HTML below to analyze image placeholders:</p>
+    
+    <textarea id="contentText" placeholder="Paste content HTML here..."></textarea>
+    
+    <button onclick="analyzeContent()">Analyze Content</button>
+    
+    <div id="result" class="result" style="display: none;">
+        <h2>Analysis Result</h2>
+        <div id="resultContent"></div>
+    </div>
+    
+    <div id="preview" class="image-preview" style="display: none;">
+        <h2>Image Previews</h2>
+        <div id="previewContent"></div>
+    </div>
+    
+    <script>
+        function analyzeContent() {
+            const content = document.getElementById('contentText').value;
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            const preview = document.getElementById('preview');
+            const previewContent = document.getElementById('previewContent');
+            
+            resultDiv.style.display = 'block';
+            resultContent.innerHTML = '';
+            
+            // Two regex patterns to handle both formats
+            const standaloneImgRegex = /\[IMG:(img-[a-zA-Z0-9-]+)\]/g;
+            const imgTagRegex = /<img[^>]*src="[^"]*\[IMG:(img-[a-zA-Z0-9-]+)\][^"]*"[^>]*>/g;
+            
+            const images = [];
+            
+            // Find all standalone image placeholders
+            let match;
+            while ((match = standaloneImgRegex.exec(content)) !== null) {
+                const placeholder = match[0];
+                const imageId = match[1];
+                images.push({ placeholder, imageId, type: 'standalone' });
+            }
+            
+            // Find all image tags with placeholders in src
+            let tagMatch;
+            while ((tagMatch = imgTagRegex.exec(content)) !== null) {
+                const placeholder = tagMatch[0];
+                const imageId = tagMatch[1];
+                images.push({ placeholder, imageId, type: 'img-tag' });
+            }
+            
+            if (images.length === 0) {
+                resultContent.innerHTML = '<p>No image placeholders found in content.</p>';
+                preview.style.display = 'none';
+                return;
+            }
+            
+            resultContent.innerHTML = `<p>Found ${images.length} image placeholders:</p><ul>`;
+            
+            images.forEach((img, index) => {
+                resultContent.innerHTML += `<li>Placeholder: <code>${img.placeholder}</code>, Image ID: <code>${img.imageId}</code></li>`;
+            });
+            
+            resultContent.innerHTML += '</ul>';
+            
+            // Display image previews
+            preview.style.display = 'block';
+            previewContent.innerHTML = '<p>Loading image previews...</p>';
+            
+            // Create the previews
+            let previewHtml = '';
+            images.forEach((img, index) => {
+                previewHtml += `
+                <div style="margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 20px;">
+                    <h3>Image ${index + 1}: ${img.imageId}</h3>
+                    <p><strong>Image Preview:</strong></p>
+                    <img src="http://localhost:8000/direct-image/${img.imageId}" 
+                        alt="Image Preview" 
+                        style="max-width: 100%; border: 1px solid #ddd;"
+                        onerror="this.onerror=null; this.src=''; this.alt='Failed to load image'; this.style.height='100px'; this.style.border='1px dashed red'; this.style.padding='10px';"
+                    />
+                </div>`;
+            });
+            
+            previewContent.innerHTML = previewHtml;
+            
+            // Create processed content preview
+            let processedContent = content;
+            
+            // First replace img tags with placeholders in src
+            processedContent = processedContent.replace(imgTagRegex, (match, imageId) => {
+                // Extract existing alt and style if available
+                let alt = 'Content Image';
+                let style = 'max-width: 100%;';
+                
+                const altMatch = match.match(/alt="([^"]*)"/);
+                if (altMatch && altMatch[1]) {
+                    alt = altMatch[1];
+                }
+                
+                const styleMatch = match.match(/style="([^"]*)"/);
+                if (styleMatch && styleMatch[1]) {
+                    style = styleMatch[1];
+                }
+                
+                return `<img src="http://localhost:8000/direct-image/${imageId}" alt="${alt}" style="${style}" />`;
+            });
+            
+            // Then replace standalone placeholders
+            processedContent = processedContent.replace(standaloneImgRegex, (match, imageId) => {
+                return `<img src="http://localhost:8000/direct-image/${imageId}" alt="Content Image" style="max-width: 100%;" />`;
+            });
+            
+            resultContent.innerHTML += `
+                <h3>Processed Content Preview:</h3>
+                <div style="border: 1px solid #ddd; padding: 15px; margin-top: 10px; background: white;">
+                    ${processedContent}
+                </div>`;
+        }
+    </script>
+</body>
+</html> 

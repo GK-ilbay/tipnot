@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Loading Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .image-test {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div class="image-test">
+        <h2>Test 1: Direct Image URL</h2>
+        <p>This tests if the image can be loaded directly from the API:</p>
+        <img src="/api/content-image/img-1741986583817" alt="Direct API Test" />
+        <div id="test1-result"></div>
+    </div>
+
+    <div class="image-test">
+        <h2>Test 2: Image in HTML string</h2>
+        <p>This tests if the image can be loaded when inserted through innerHTML:</p>
+        <div id="test2-container"></div>
+        <div id="test2-result"></div>
+    </div>
+
+    <div class="image-test">
+        <h2>Test 3: Placeholder Replacement</h2>
+        <p>This tests if the placeholder replacement works:</p>
+        <div id="test3-container">[IMG:img-1741986583817]</div>
+        <div id="test3-result"></div>
+    </div>
+
+    <script>
+        // Helper function to check if an image loaded successfully
+        function checkImage(imgElement, resultElement) {
+            imgElement.onload = function() {
+                resultElement.innerHTML = '<span class="success">✓ Image loaded successfully!</span>';
+            };
+            imgElement.onerror = function() {
+                resultElement.innerHTML = '<span class="error">✗ Failed to load image!</span>';
+            };
+        }
+
+        // Test 1: Check the direct image
+        const test1Image = document.querySelector('.image-test:nth-child(1) img');
+        const test1Result = document.getElementById('test1-result');
+        checkImage(test1Image, test1Result);
+
+        // Test 2: Insert image with innerHTML
+        const test2Container = document.getElementById('test2-container');
+        const test2Result = document.getElementById('test2-result');
+        test2Container.innerHTML = '<img src="/api/content-image/img-1741986583817" alt="HTML String Test" />';
+        const test2Image = test2Container.querySelector('img');
+        checkImage(test2Image, test2Result);
+
+        // Test 3: Replace placeholder
+        const test3Container = document.getElementById('test3-container');
+        const test3Result = document.getElementById('test3-result');
+        const content = test3Container.innerHTML;
+        const processedContent = content.replace(
+            /\[IMG:(img-[a-zA-Z0-9-]+)\]/g, 
+            '<img src="/api/content-image/$1" alt="Placeholder Test" />'
+        );
+        test3Container.innerHTML = processedContent;
+        const test3Image = test3Container.querySelector('img');
+        checkImage(test3Image, test3Result);
+    </script>
+</body>
+</html> 
